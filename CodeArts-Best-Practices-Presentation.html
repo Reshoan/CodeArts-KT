@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CodeArts Best Practices — Team Presentation</title>
+<style>
+  :root {
+    --bg: #0b1020;
+    --bg-2: #0f1530;
+    --panel: #141b3a;
+    --ink: #e8ecff;
+    --ink-soft: #b6bee0;
+    --accent: #5fa8ff;
+    --accent-2: #7c5cff;
+    --good: #3ddc97;
+    --warn: #ffb547;
+    --bad: #ff6b6b;
+    --line: #2a335f;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: radial-gradient(circle at 20% 10%, #1a2150 0%, var(--bg) 55%);
+    color: var(--ink);
+    font-family: "Segoe UI", "Inter", system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .deck {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+  }
+  .slide {
+    position: absolute;
+    inset: 0;
+    padding: 56px 80px 80px 80px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+  }
+  .slide.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  /* Header band */
+  .slide-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--ink-soft);
+    font-size: 14px;
+    text-transform: uppercase;
+  }
+  .brand .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    box-shadow: 0 0 16px var(--accent);
+  }
+  .section-tag {
+    color: var(--ink-soft);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  h1 {
+    font-size: 56px;
+    line-height: 1.1;
+    font-weight: 800;
+    background: linear-gradient(135deg, #fff 0%, #b9c5ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 16px;
+  }
+  h2 {
+    font-size: 38px;
+    line-height: 1.15;
+    font-weight: 800;
+    margin-bottom: 18px;
+  }
+  h3 {
+    font-size: 22px;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  p, li { font-size: 18px; line-height: 1.55; color: var(--ink-soft); }
+  ul { padding-left: 22px; margin: 8px 0; }
+  li { margin: 6px 0; }
+  strong { color: var(--ink); font-weight: 600; }
+
+  /* TITLE slide */
+  .title-slide {
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0 100px;
+  }
+  .title-slide .eyebrow {
+    color: var(--accent);
+    letter-spacing: 4px;
+    font-size: 14px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .title-slide h1 { font-size: 78px; }
+  .title-slide .sub {
+    font-size: 22px;
+    color: var(--ink-soft);
+    max-width: 800px;
+    margin-top: 10px;
+  }
+  .title-slide .meta {
+    margin-top: 56px;
+    color: var(--ink-soft);
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+
+  /* CARDS grids */
+  .grid {
+    display: grid;
+    gap: 18px;
+    margin-top: 18px;
+  }
+  .grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .grid.cols-5 { grid-template-columns: repeat(5, 1fr); }
+
+  .card {
+    background: linear-gradient(180deg, var(--panel), #10162e);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 20px 22px;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .card:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .card .ico {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: white;
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+  .card h4 {
+    font-size: 18px;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+  .card p {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+
+  /* PILL / chip */
+  .pill {
+    display: inline-block;
+    padding: 4px 12px;
+    background: rgba(95,168,255,0.12);
+    border: 1px solid rgba(95,168,255,0.45);
+    color: var(--accent);
+    border-radius: 999px;
+    font-size: 12px;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+  .pill.alt {
+    background: rgba(124,92,255,0.12);
+    border-color: rgba(124,92,255,0.45);
+    color: #b29dff;
+  }
+  .pill.good {
+    background: rgba(61,220,151,0.12);
+    border-color: rgba(61,220,151,0.45);
+    color: var(--good);
+  }
+  .pill.warn {
+    background: rgba(255,181,71,0.12);
+    border-color: rgba(255,181,71,0.45);
+    color: var(--warn);
+  }
+
+  /* TIMELINE */
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin-top: 24px;
+    position: relative;
+  }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    top: 30px;
+    left: 60px;
+    right: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  }
+  .tl-step {
+    text-align: center;
+    padding: 0 14px;
+    position: relative;
+  }
+  .tl-step .num {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 800;
+    margin: 0 auto 16px;
+    border: 4px solid var(--bg);
+    position: relative;
+    z-index: 1;
+  }
+  .tl-step h4 { font-size: 18px; margin-bottom: 6px; }
+  .tl-step p { font-size: 14px; }
+
+  /* PROCESS-FLOW */
+  .flow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: stretch;
+    margin-top: 18px;
+  }
+  .flow .step {
+    flex: 1;
+    min-width: 150px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 12px;
+    text-align: center;
+    position: relative;
+  }
+  .flow .step .n {
+    color: var(--accent);
+    font-size: 12px; font-weight: 800;
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+  }
+  .flow .step h5 {
+    font-size: 14px;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .flow .step p {
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  .flow .arrow {
+    align-self: center;
+    color: var(--accent);
+    font-size: 22px;
+  }
+
+  /* TWO-COLUMN layout */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+    margin-top: 12px;
+  }
+
+  /* Bigger spotlight number */
+  .stat {
+    font-size: 64px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Architecture diagram */
+  .arch {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-top: 20px;
+  }
+  .arch .svc {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 14px;
+    text-align: center;
+  }
+  .arch .svc .badge {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    margin: 0 auto 12px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800;
+    color: white;
+    font-size: 18px;
+  }
+  .arch .svc h5 { font-size: 14px; color: var(--ink); margin-bottom: 6px; }
+  .arch .svc .tech {
+    font-size: 11px;
+    color: var(--ink-soft);
+    line-height: 1.45;
+  }
+
+  /* Roles */
+  .roles {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 18px;
+  }
+  .role {
+    text-align: center;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 22px 14px;
+  }
+  .role .avatar {
+    width: 60px; height: 60px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    font-weight: 800;
+    color: white;
+  }
+  .role h5 { font-size: 18px; color: var(--ink); margin-bottom: 4px;}
+  .role .role-tag { font-size: 12px; color: var(--accent); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;}
+  .role p { font-size: 13px; }
+
+  /* CONTROLS */
+  .controls {
+    position: fixed;
+    bottom: 18px;
+    right: 22px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    z-index: 50;
+  }
+  .controls button {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    width: 40px; height: 40px;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .controls button:hover {
+    border-color: var(--accent);
+    transform: translateY(-1px);
+  }
+  .counter {
+    color: var(--ink-soft);
+    font-size: 13px;
+    padding: 0 10px;
+    font-variant-numeric: tabular-nums;
+  }
+  .progress {
+    position: fixed;
+    bottom: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    transition: width 0.3s ease;
+    z-index: 60;
+  }
+  .hint {
+    position: fixed;
+    bottom: 22px;
+    left: 24px;
+    color: var(--ink-soft);
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  /* Highlight box */
+  .callout {
+    background: linear-gradient(135deg, rgba(95,168,255,0.08), rgba(124,92,255,0.08));
+    border: 1px solid rgba(95,168,255,0.3);
+    border-left: 4px solid var(--accent);
+    padding: 16px 20px;
+    border-radius: 10px;
+    margin-top: 18px;
+  }
+  .callout p { color: var(--ink); font-size: 16px; }
+
+  /* Permissions table */
+  table.perms {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 14px;
+    font-size: 14px;
+  }
+  table.perms th, table.perms td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink-soft);
+  }
+  table.perms th {
+    background: rgba(95,168,255,0.06);
+    color: var(--accent);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+  table.perms tr:hover td { background: rgba(95,168,255,0.04); }
+
+  .key-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-top: 18px;
+  }
+  .key-list .item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 14px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+  .key-list .item .check {
+    background: var(--good);
+    color: #002517;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .key-list .item h5 { font-size: 15px; color: var(--ink); margin-bottom: 4px; }
+  .key-list .item p { font-size: 13px; }
+
+  /* end slide */
+  .end-slide {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .end-slide h1 { font-size: 96px; }
+  .end-slide p { font-size: 22px; color: var(--ink-soft); }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <!-- 1. TITLE -->
+  <section class="slide title-slide active">
+    <div class="eyebrow">Internal Briefing · DevOps Enablement</div>
+    <h1>CodeArts<br>Best Practices</h1>
+    <p class="sub">An end-to-end walkthrough of the HE2E DevOps framework, illustrated with the Phoenix Mall reference project — covering plan, develop, build, deploy, test, secure, and govern.</p>
+    <div class="meta">PRESENTED BY RESHOAN · CODEARTS IMPLEMENTATION LEAD</div>
+  </section>
+
+  <!-- 2. WHAT WE'LL COVER -->
+  <section class="slide">
+    <div class="slide-header">
+      <div class="brand"><span class="dot"></span>CodeArts Best Practices</div>
+      <div class="section-tag">Agenda</div>
+    </div>
+    <h2>What we'll cover today</h2>
+    <p>Four building blocks for getting the most out of CodeArts at scale.</p>
+    <div class="grid cols-4" style="margin-top: 28px;">
+      <div class="card">
+        <div class="ico">01</div>
+        <h4>HE2E DevOps</h4>
+        <p>The framework that ties planning, design, and continuous delivery together.</p>
+      </div>
+      <div class="card">
+        <div class="ico">02</div>
+        <h4>Phoenix Mall</h4>
+        <p>A complete sample project — from sprint planning to production deploy.</p>
+      </div>
+      <div class="card">
+        <div class="ico">03</div>
+        <h4>Security</h4>
+        <p>Operational, code, and continuous-delivery security configuration.</p>
+      </div>
+      <div class="card">
+        <div class="ico">04</div>
+        <h4>Permissions</h4>
+        <p>Role-based access for nine functional teams in the org.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. HE2E FRAMEWORK -->
+  <section class="slide">
+    <div class="slide-header">
+      <div class="brand"><span class="dot"></span>CodeArts Best Practices</div>
+      <div class="section-tag">Section 1 · Framework</div>
+    </div>
+    <h2>The HE2E DevOps Framework</h2>
+    <p>An operable, implementable agile methodology — three connected stages take an idea from request to running production.</p>
+    <div class="timeline">
+      <div class="tl-step">
+        <div class="num">1</div>
+        <h4>Planning &amp; Design</h4>
+        <p>Impact mapping and user stories turn problems into scoped requirements.</p>
+      </div>
+      <div class="tl-step">
+        <div class="num">2</div>
+        <h4>Iteration Tracking</h4>
+        <p>Scrum sprints, daily standups, retrospectives — Kanban for value-flow visibility.</p>
+      </div>
+      <div class="tl-step">
+        <div class="num">3</div>
+        <h4>Continuous Delivery</h4>
+        <p>Code → check → build → test → deploy, all wired through pipelines and gates.</p>
+      </div>
+    </div>
+    <div class="callout">
+      <p><strong>Why this matters:</strong> software solves problems and delivers value — not just functions. HE2E keeps the team aligned from intent to release.</p>
+    </div>
+  </section>
+
+  <!-- 4. PHOENIX MALL BACKGROUND -->
+  <section class="slide">
+    <div class="slide-header">
+      <div class="brand"><span class="dot"></span>CodeArts Best Practices</div>
+      <div class="section-tag">Section 2 · The Sample Project</div>
+    </div>
+    <h2>Meet Phoenix Mall</h2>
+    <p>Company A is an automobile parts dealer. Phoenix Mall is their online store — managing members, parts, and orders, so customers can browse and buy.</p>
+    <div class="two-col" style="margin-top:24px;">
+      <div class="card">
+        <h3>Delivery model</h3>
+        <p style="margin-bottom: 10px;">Iterative <strong>Scrum</strong> — each sprint runs <strong>two weeks</strong>. Phoenix has shipped through three sprints; <strong>Sprint 4</strong> introduces a new "store query" requirement we'll trace end to end.</p>
+        <div style="margin-top: 14px;">
+          <span class="pill">Scrum</span>
+          <span class="pill">2-week sprints</span>
+          <span class="pill alt">Microservices</span>
+          <span class="pill alt">Containers</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3>What we'll build</h3>
+        <p>A new feature added to Sprint 4: <strong>"User can query network of all stores."</strong></p>
+        <p style="margin-top:10px;">We'll plan it, code it, review it, scan it, build images, push to SWR, deploy to CCE/ECS, test it, and wire the whole thing into a pipeline.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. SOLUTION ARCHITECTURE -->
+  <section class="slide">
+    <div class="slide-header">
+      <div class="brand"><span class="dot"></span>CodeArts Best Practices</div>
+      <div class="section-tag">Section 2 · Architecture</div>
+    </div>
+    <h2>Solution architecture</h2>
+    <p>Phoenix Mall is built from <strong>five microservice components</strong> — packaged as images, deployed to either CCE or ECS.</p>
+    <div class="arch">
+      <div class="svc">
+        <div class="badge">V</div>
+        <h5>Vote (Web Client)</h5>
+        <p class="tech">Python · Flask<br>Gunicorn server</p>
+      </div>
+      <div class="svc">
+        <div class="badge">R</div>
+        <h5>Result (Web Mgmt)</h5>
+        <p class="tech">Node.js · Express<br>server.js</p>
+      </div>
+      <div class="svc">
+        <div class="badge">W</div>
+        <h5>Worker (Batch)</h5>
+        <p class="tech">.NET Core / Java<br>Background job</p>
+      </div>
+      <div class="svc">
+        <div class="badge">C</div>
+        <h5>Order Cache</h5>
+        <p class="tech">Redis<br>UI persistence</p>
+      </div>
+      <div class="svc">
+        <div class="badge">D</div>
+        <h5>Order Database</h5>
+        <p class="tech">PostgreSQL<br>Mgmt UI source</p>
+      </div>
+    </div>
+    <div class="callout">
+      <p><strong>Pattern:</strong> Vote captures user "likes" → Worker pulls from Redis → writes to PostgreSQL → Result reads &amp; displays. Each lives in its own container, built &amp; pushed independently.</p>
+    </div>
+  </section>
+
+  <!-- 6. TEAM ROLES -->
+  <section class="slide">
+    <div class="slide-header">
+      <div class="brand"><span class="dot"></span>CodeArts Best Practices</div>
+      <div class="section-tag">Section 2 · The Team</div>
+    </div>
+    <h2>Who's on the project</h2>
+    <p>Four roles drive the end-to-end workflow. We'll watch each of them in action.</p>
+    <div class="roles">
+      <div class="role">
+        <div class="avatar">S</div>
+        <h5>Sarah</h5>
+        <div class="role-tag">Project Admin</div>
+        <p>Plans the project, sets up the team, configures permissions.</p>
+      </div>
+      <div class="role">
+        <div class="avatar">M</div>
+        <h5>Maggie</h5>
+        <div class="role-tag">Project Manager</div>
+        <p>Owns delivery plans, reviews and merges code.</p>
+      </div>
+      <div class="role">
+        <div class="avatar">C</div>
+        <h5>Chris</h5>
+        <div class="role-tag">Developer</div>
+        <p>Codes, builds, deploys, verifies — the doer of the loop.</p>
+      </div>
+      <div class="role">
+        <div class="avatar">B</div>
+        <h5>Billy</h5>
+        <div class="role-tag">Tester</div>
+        <p>Writes &amp; runs test cases, raises bugs, signs off quality.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. RESOURCE PLANNING -->
+  <section class="slide">
+    <div class="slide-header">
+      <div class="brand"><span class="dot"></span>CodeArts Best Practices</div>
+      <div class="section-tag">Section 2 · Setup</div>
+    </div>
+    <h2>Resource planning</h2>
+    <p>Before any code is written, three resources need to be provisioned in the same region.</p>
+    <div class="grid cols-3" style="margin-top:24px;">
+      <div class="card">
+        <div class="ico">CA</div>
+        <h4>CodeArts</h4>
+        <p>Basic edition · 5 users · 1-month subscription. Hosts the entire E2E workflow.</p>
+      </div>
+      <div class="card">
+        <div class="ico">CCE</div>
+        <h4>Cloud Container Engine</h4>
+        <p>Standard cluster · x86 · tunnel network · 2 vCPU/8 GiB nodes on EulerOS. Pay-per-use.</p>
+      </div>
+      <div class="card">
+        <div class="ico">ECS</div>
+        <h4>Elastic Cloud Server</h4>
+        <p>Ubuntu 16.04 · 2 vCPU/8 GiB · 5 Mbit/s EIP · ports 5000–5001 open. Pay-per-use.</p>
+      </div>
+    </div>
+    <div class="callout">
+      <p><strong>Pick one:</strong> the practice supports both CCE and ECS deployment paths. Choose the one that fits your platform — both are billed once provisioned.</p>
+    </div>
+  </section>
+
+  <!-- 8. END-TO-END PROCESS -->
+  <section class="slide">
+    <div class="slide-header">
+      <div class="brand"><span class="dot"></span>CodeArts Best Practices</div>
+      <div class="section-tag">Section 2 · The Loop</div>
+    </div>
+    <h2>The end-to-end delivery loop</h2>
+    <p>Nine steps, each a CodeArts service, each owned by a specific role.</p>
+    <div class="flow" style="margin-top: 28px;">
+      <div class="step"><div class="n">01</div><h5>Prepare</h5><p>Sarah · create project, add members</p></div>
+      <div class="arrow">›</div>
+      <div class="step"><div class="n">02</div><h5>Plan</h5><p>Sarah / Maggie · stories &amp; sprints</p></div>
+      <div class="arrow">›</div>
+      <div class="step"><div class="n">03</div><h5>Code</h5><p>Chris · branch, commit, MR</p></div>
+      <div class="arrow">›</div>
+      <div class="step"><div class="n">04</div><h5>Check</h5><p>Chris · static scan</p></div>
+      <div class="arrow">›</div>
+      <div class="step"><div class="n">05</div><h5>Build</h5><p>Chris · images → SWR</p></div>
+    </div>
+    <div class="flow" style="margin-top: 14px;">
+      <div class="step"><div class="n">06</div><h5>Deploy</h5><p>Chris · CCE or ECS</p></div>
+      <div class="arrow">›</div>
+      <div class="step"><div class="n">07</div><h5>Test</h5><p>Billy · plan, design, execute</p></div>
+      <div class="arrow">›</div>
+      <div class="step"><div class="n">08</div><h5>Pipeline</h5><p>Chris · stitch it all together</p></div>
+      <div class="arrow">›</div>
+      <div class="step"><div class="n">09</div><h5>Release</h5><p>Sarah · clean up resources</p></div>
+    </div>
+  </section>
+
+  <!-- 9. STEP 1-2 PLAN -->
+  <section class="slide">
+    <div class="slide-header">
+      <div class="brand"><span class="dot"></span>CodeArts Best Practices</div>
+      <div class="section-tag">Step 1–2 · Prepare &amp; Plan</div>
+    </div>
+    <h2>Plan the work in CodeArts Req</h2>
+    <p>Use the <strong>"Epic › Feature › Story › Task"</strong> hierarchy to break down delivery — visualized as a mind map.</p>
+    <div class="two-col">
+      <div>
+        <h3>Sarah — set up the project</h3>
+        <ul>
+          <li>Create the <strong>Phoenix Mall</strong> DevOps Full-Process project</li>
+          <li>Add IAM users Maggie, Chris, Billy</li>
+          <li>Assign roles: PM, Developer, Tester</li>
+          <li>Grant Developers <em>Create Environment</em> permission</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Maggie — plan Sprint 4</h3>
+        <ul>
+          <li>Add Feature: <strong>Store Network</strong></li>
+          <li>Add Story: <em>"User can query network of all stores"</em></li>
+          <li>Set priority <span class="pill warn">High</span> severity <span class="pill warn">Critical</span></li>
+          <li>Create Sprint 4 (2 weeks), break into child tasks for Chris</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout">
+      <p><strong>Tracking:</strong> daily standups, sprint reviews, retrospectives — backed by built-in dashboards and custom reports for ongoing progress visibility.</p>
+    </div>
+  </section>
+
+  <!-- 10. STEP 3 - CODE -->
+  <section class="slide">
+    <div class="slide-header">
+      <div class="brand"><span class="dot"></span>CodeArts Best Practices</div>
+      <div class="section-tag">Step 3 · Develop Code</div>
+    </div>
+    <h2>Branch → commit → merge request</h2>
+    <p>The golden rule: <strong>never code on master</strong>. Each feature lives on its own branch and merges only after review.</p>
+    <div class="flow" style="margin-top: 24px;">
+      <div class="step"><div class="n">01</div><h5>Create branch</h5><p>Chris creates <code>Feature-Store</code> from <code>master</code>, links the work item.</p></div>
+      <div class="arrow">›</div>
+      <div class="step"><div class="n">02</div><h5>Commit code</h5><p>Edits <code>store-network.html</code> + <code>index.html</code>. Commit message references task ID.</p></div>
+      <div class="arrow">›</div>
+      <div class="step"><div class="n">03</div><h5>Open MR</h5><p>Source <code>Feature-Store</code> → Target <code>master</code>. Maggie set as approver.</p></div>
+      <div class="arrow">›</div>
+      <div class="step"><div class="n">04</div><h5>Review &amp; merge</h5><p>Maggie comments, approves the gate, merges. Task auto-marks <em>Resolved</em>.</p></div>
+    </div>
+    <div class="callout">
+      <p><strong>Why it matters:</strong> "function branches + merge requests" keeps <code>master</code> stable and traceable, while linking commits back to work items gives you full audit history.</p>
+    </div>
+  </section>
+
+  <!-- 11. STEP 4 - CHECK -->
+  <section class="slide">
+    <div class="slide-header">
+      <div class="brand"><span class="dot"></span>CodeArts Best Practices</div>
+      <div class="section-tag">Step 4 · Check Code</div>
+    </div>
+    <h2>Static analysis with CodeArts Check</h2>
+    <p>Before code merges, scan for quality, style, and security issues — with fix suggestions inline.</p>
+    <div class="grid cols-2">
+      <div class="card">
+        <h3>Four preset tasks</h3>
+        <ul>
+          <li><strong>phoenix-codecheck-worker</strong> — Worker function</li>
+          <li><strong>phoenix-codecheck-result</strong> — Result function</li>
+          <li><strong>phoenix-codecheck-vote</strong> — Vote function</li>
+          <li><strong>phoenix-sample-javas</strong> — JS across the repo</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>How to extend</h3>
+        <ul>
+          <li>Open the task → Settings → Rule Sets</li>
+          <li>Default language is Java; <strong>enable Python</strong> for Worker</li>
+          <li>Click <em>Execute Check</em> &amp; review the dashboard</li>
+          <li>Click <em>Help</em> on any issue for fix suggestions</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout">
+      <p><strong>Standard practice:</strong> coding standards + continuous static scanning + bug-fixing inside each sprint = far less remediation cost downstream.</p>
+    </div>
+  </section>
+
+  <!-- 12. STEP 5 - BUILD -->
+  <section class="slide">
+    <div class="slide-header">
+      <div class="brand"><span class="dot"></span>CodeArts Best Practices</div>
+      <div class="section-tag">Step 5 · Build &amp; Push</div>
+    </div>
+    <h2>Build images, push to SWR</h2>
+    <p>Package every microservice + environment into an image. Same image runs in dev, test, QA, and prod — <strong>no environment drift</strong>.</p>
+    <div class="two-col">
+      <div>
+        <h3>Five preset build tasks</h3>
+        <ul>
+          <li><strong>phoenix-sample-ci</strong> — basic build</li>
+          <li><strong>phoenix-sample-ci-test</strong> — test images</li>
+          <li><strong>phoenix-sample-ci-worker / -result / -vote</strong></li>
+        </ul>
+        <h3 style="margin-top: 16px;">Each build task does</h3>
+        <ul>
+          <li>Build Vote / Result / Worker images</li>
+          <li>Generate &amp; build Postgres + Redis images</li>
+          <li>Push all 5 to SWR under your <code>phoenix</code> org</li>
+          <li>Replace versions in compose &amp; k8s files, archive to release repo</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Auto-trigger setup</h3>
+        <ul>
+          <li><strong>Run upon code commit</strong> — every push to master rebuilds</li>
+          <li><strong>Scheduled execution</strong> — pick days &amp; time (e.g. 12:00 daily)</li>
+        </ul>
+        <div class="callout" style="margin-top:16px;">
+          <p><strong>Result:</strong> 5 images in SWR (vote, result, worker, postgres, redis) + .yaml + tar.gz files in the release repo, ready to deploy.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13. STEP 6 - DEPLOY CCE -->
+  <section class="slide">
+    <div class="slide-header">
+      <div class="brand"><span class="dot"></span>CodeArts Best Practices</div>
+      <div class="section-tag">Step 6a · Deploy to CCE</div>
+    </div>
+    <h2>Kubernetes deploy: phoenix-cd-cce</h2>
+    <p>Use the preset <strong>phoenix-cd-cce</strong> application — visualised, automated, repeatable.</p>
+    <div class="flow" style="margin-top: 22px;">
+      <div class="step"><div class="n">01</div><h5>Clear cluster</h5><p>Delete any leftover deployments in <code>phoenix-cce</code></p></div>
+      <div class="arrow">›</div>
+      <div class="step"><div class="n">02</div><h5>Configure</h5><p>Cluster + namespace · build-task name · version 1.0.0</p></div>
+      <div class="arrow">›</div>
+      <div class="step"><div class="n">03</div><h5>Save &amp; Deploy</h5><p>Five workloads come up <strong style="color:var(--good)">Running</strong></p></div>
+      <div class="arrow">›</div>
+      <div class="step"><div class="n">04</div><h5>Expose</h5><p>Add LoadBalancer with EIP for vote (5000) &amp; result (5001)</p></div>
+    </div>
+    <div class="callout">
+      <p><strong>Verify:</strong> open <code>http://EIP:5000</code> for the homepage, <code>http://EIP:5001</code> for the dashboard. Done.</p>
+    </div>
+  </section>
+
+  <!-- 14. STEP 6 - DEPLOY ECS -->
+  <section class="slide">
+    <div class="slide-header">
+      <div class="brand"><span class="dot"></span>CodeArts Best Practices</div>
+      <div class="section-tag">Step 6b · Deploy to ECS</div>
+    </div>
+    <h2>Host deploy: phoenix-sample-standalone</h2>
+    <p>An alternative when you don't want a Kubernetes cluster — deploys to a single host via Docker Compose.</p>
+    <div class="grid cols-2">
+      <div class="card">
+        <h3>Step 1 — Add the host</h3>
+        <ul>
+          <li>Settings › Basic Resources › Create Host Cluster (<strong>phoenix-hostgroup</strong>, Linux, Direct)</li>
+          <li>Import the <code>phoenix-ecs</code> instance</li>
+          <li>Auth: root / password / SSH 22</li>
+          <li>Connectivity check turns green</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Step 2 — Pre-deploy dependencies</h3>
+        <ul>
+          <li>Use <strong>phoenix-sample-predeploy</strong> to install Docker + Docker-Compose</li>
+          <li>Create <code>phoenix-env</code> environment, import host</li>
+          <li>Logs should show both versions printing</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout">
+      <p><strong>Step 3 — Deploy:</strong> in <strong>phoenix-sample-standalone</strong>, set source = build task <code>phoenix-sample-ci</code>, env = <code>phoenix-env</code>, fill in SWR creds, then Save &amp; Deploy. Verify on <code>http://EIP:5000</code> &amp; <code>:5001</code>.</p>
+    </div>
+  </section>
+
+  <!-- 15. STEP 7 - TEST -->
+  <section class="slide">
+    <div class="slide-header">
+      <div class="brand"><span class="dot"></span>CodeArts Best Practices</div>
+      <div class="section-tag">Step 7 · Test</div>
+    </div>
+    <h2>Manage tests with CodeArts TestPlan</h2>
+    <p>Billy owns the test cycle — plans, designs, executes, and tracks quality.</p>
+    <div class="flow" style="margin-top: 22px;">
+      <div class="step"><div class="n">01</div><h5>Create plan</h5><p><strong>Test Plan of Sprint4</strong>, manual mode, linked to the Sprint 4 story.</p></div>
+      <div class="arrow">›</div>
+      <div class="step"><div class="n">02</div><h5>Design cases</h5><p>Case <em>Store Query</em>: open homepage → click Store Network → filter by city.</p></div>
+      <div class="arrow">›</div>
+      <div class="step"><div class="n">03</div><h5>Execute</h5><p>Step-by-step, mark Successful or Failed.</p></div>
+      <div class="arrow">›</div>
+      <div class="step"><div class="n">04</div><h5>Bug loop</h5><p>On failure: log a bug, assign to Chris, re-test once fixed, close.</p></div>
+    </div>
+    <div class="callout">
+      <p><strong>Quality dashboard:</strong> visualises requirement coverage, defect counts, case pass rate, and case completion rate — your single source of truth for release readiness.</p>
+    </div>
+  </section>
+
+  <!-- 16. STEP 8 - PIPELINE -->
+  <section class="slide">
+    <div class="slide-header">
+      <div class="brand"><span class="dot"></span>CodeArts Best Practices</div>
+      <div class="section-tag">Step 8 · Pipelines</div>
+    </div>
+    <h2>Stitch it all together</h2>
+    <p>A pipeline connects code check, build, and deploy into a single automated flow — the engine of continuous delivery.</p>
+    <div class="flow" style="margin-top: 24px;">
+      <div class="step"><div class="n">A</div><h5>Pipeline Source</h5><p>master branch of phoenix-sample</p></div>
+      <div class="arrow">›</div>
+      <div class="step"><div class="n">B</div><h5>Check</h5><p>phoenix-codecheck-worker · with pass conditions</p></div>
+      <div class="arrow">›</div>
+      <div class="step"><div class="n">C</div><h5>Build</h5><p>phoenix-sample-ci</p></div>
+      <div class="arrow">›</div>
+      <div class="step"><div class="n">D</div><h5>Deploy</h5><p>phoenix-cd-cce <em>or</em> phoenix-sample-standalone</p></div>
+    </div>
+    <div class="two-col" style="margin-top: 22px;">
+      <div class="card">
+        <h3>Pass conditions</h3>
+        <p>Add <strong>SystemPolicy</strong> to the Check stage — pipeline fails automatically if scan results breach the threshold.</p>
+      </div>
+      <div class="card">
+        <h3>Auto-trigger</h3>
+        <p>Execution Plan › Trigger Settings › <strong>Code commit</strong> on <code>master</code> → every merge runs the full pipeline.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 17. RELEASE RESOURCES -->
+  <section class="slide">
+    <div class="slide-header">
+      <div class="brand"><span class="dot"></span>CodeArts Best Practices</div>
+      <div class="section-tag">Step 9 · Cleanup</div>
+    </div>
+    <h2>Release resources you don't need</h2>
+    <p>Pay-per-use means costs continue until resources are released.</p>
+    <div class="grid cols-2" style="margin-top: 24px;">
+      <div class="card">
+        <div class="ico">ECS</div>
+        <h4>Delete the ECS</h4>
+        <p>Once verification is complete, delete the phoenix-ecs instance and its EIP.</p>
+      </div>
+      <div class="card">
+        <div class="ico">CCE</div>
+        <h4>Delete the CCE cluster</h4>
+        <p>Delete the pay-per-use phoenix-cce cluster and its node pool.</p>
+      </div>
+    </div>
+    <div class="callout" style="border-left-color: var(--bad);">
+      <p><strong>⚠ Warning:</strong> released resources <em>cannot</em> be recovered. Make sure you've captured everything worth keeping (artifacts, screenshots, logs) before pulling the plug.</p>
+    </div>
+  </section>
+
+  <!-- 18. SECURITY OVERVIEW -->
+  <section class="slide">
+    <div class="slide-header">
+      <div class="brand"><span class="dot"></span>CodeArts Best Practices</div>
+      <div class="section-tag">Section 3 · Security</div>
+    </div>
+    <h2>Configuring CodeArts security</h2>
+    <p>Security splits into three lanes — each with concrete configuration we should adopt by default.</p>
+    <div class="grid cols-3" style="margin-top: 22px;">
+      <div class="card">
+        <div class="ico">OPS</div>
+        <h4>Operational</h4>
+        <p style="margin-bottom:10px;">Permission control · Audit (CTS) · IP whitelists · Watermarks</p>
+        <span class="pill">Least privilege</span>
+        <span class="pill">CTS</span>
+        <span class="pill">Whitelist</span>
+      </div>
+      <div class="card">
+        <div class="ico">CODE</div>
+        <h4>Code</h4>
+        <p style="margin-bottom:10px;">Access tokens · Deploy keys · Protected branches · Visibility · Commit rules</p>
+        <span class="pill alt">Tokens</span>
+        <span class="pill alt">Read-only keys</span>
+        <span class="pill alt">Branch protection</span>
+      </div>
+      <div class="card">
+        <div class="ico">CD</div>
+        <h4>Continuous Delivery</h4>
+        <p style="margin-bottom:10px;">Private (encrypted) parameters · Host security groups</p>
+        <span class="pill good">Encrypted at rest</span>
+        <span class="pill good">Network isolation</span>
+      </div>
+    </div>
+    <div class="callout">
+      <p><strong>Default posture:</strong> protect master, store secrets as private params, enable CTS, require deploy keys for read-only repo access from build agents.</p>
+    </div>
+  </section>
+
+  <!-- 19. SECURITY DETAILS -->
+  <section class="slide">
+    <div class="slide-header">
+      <div class="brand"><span class="dot"></span>CodeArts Best Practices</div>
+      <div class="section-tag">Section 3 · Security · Details</div>
+    </div>
+    <h2>Concrete security checklist</h2>
+    <p>What to actually turn on, in order of priority.</p>
+    <div class="key-list">
+      <div class="item"><div class="check">✓</div><div><h5>Three-layer permissions</h5><p>Tenant, project, instance — assign by least privilege.</p></div></div>
+      <div class="item"><div class="check">✓</div><div><h5>Enable CTS audit logs</h5><p>For every CodeArts service · compliance + tracing + RCA.</p></div></div>
+      <div class="item"><div class="check">✓</div><div><h5>IP whitelists</h5><p>On Repo and Artifact — block brute-force &amp; DDoS.</p></div></div>
+      <div class="item"><div class="check">✓</div><div><h5>Watermark Repo views</h5><p>Visible visitor watermark — deters source leaks.</p></div></div>
+      <div class="item"><div class="check">✓</div><div><h5>Access tokens with TTL</h5><p>Replace passwords for third-party access; max 1 year.</p></div></div>
+      <div class="item"><div class="check">✓</div><div><h5>Deploy keys (read-only)</h5><p>Use for CI clones — never the user's full creds.</p></div></div>
+      <div class="item"><div class="check">✓</div><div><h5>Protect master branch</h5><p>Force MR-only merges; only authorised roles can push.</p></div></div>
+      <div class="item"><div class="check">✓</div><div><h5>Private parameters</h5><p>Store secrets in Build/Deploy/Pipeline/TestPlan params, encrypted, hidden from logs.</p></div></div>
+    </div>
+  </section>
+
+  <!-- 20. PERMISSIONS OVERVIEW -->
+  <section class="slide">
+    <div class="slide-header">
+      <div class="brand"><span class="dot"></span>CodeArts Best Practices</div>
+      <div class="section-tag">Section 4 · Permissions</div>
+    </div>
+    <h2>Role-based permissions for nine teams</h2>
+    <p>CodeArts ships system roles + lets you create custom ones, save them as templates, and reuse across projects.</p>
+    <div class="grid cols-3" style="margin-top: 18px;">
+      <div class="card"><h4>R&amp;D Team</h4><p>R&amp;D leader: branch mgmt + reviews. Developer: view, branch, MR.</p></div>
+      <div class="card"><h4>Middle-end Team</h4><p>Reuses R&amp;D leader / Developer roles via "Copy Role".</p></div>
+      <div class="card"><h4>Architecture Team</h4><p>Architecture leader (= R&amp;D leader). System engineer (= Developer).</p></div>
+      <div class="card"><h4>Test Team</h4><p>Test manager: full TestPlan + view-only on Repo. Tester: cases + mind maps.</p></div>
+      <div class="card"><h4>PO Team</h4><p>Product leader: maintain RR/IR/US, version &amp; feature iterations.</p></div>
+      <div class="card"><h4>PM Team</h4><p>Project mgmt leader/member: own test plans &amp; project tracking.</p></div>
+      <div class="card"><h4>Big Data Team</h4><p>Big data leader/dev/PM: cloned from R&amp;D + Product roles.</p></div>
+      <div class="card"><h4>O&amp;M Team</h4><p>O&amp;M leader: full pipeline. Engineer: build/deploy/execute. On-call: read-only.</p></div>
+      <div class="card"><h4>DBA Team</h4><p>DBA leader: full Pipeline + privilege config. Members copy that role.</p></div>
+    </div>
+  </section>
+
+  <!-- 21. PERMISSIONS PRINCIPLES -->
+  <section class="slide">
+    <div class="slide-header">
+      <div class="brand"><span class="dot"></span>CodeArts Best Practices</div>
+      <div class="section-tag">Section 4 · Permissions · Principles</div>
+    </div>
+    <h2>How we'll roll permissions out</h2>
+    <p>Three principles that make role design sane and reusable.</p>
+    <div class="grid cols-3" style="margin-top: 22px;">
+      <div class="card">
+        <div class="ico">1</div>
+        <h4>Start from system roles</h4>
+        <p>Project Manager, Developer, Tester come pre-built. Don't reinvent — extend.</p>
+      </div>
+      <div class="card">
+        <div class="ico">2</div>
+        <h4>Use "Copy Role"</h4>
+        <p>For team variants (e.g. Big Data Developer = Developer), copy and adjust deltas.</p>
+      </div>
+      <div class="card">
+        <div class="ico">3</div>
+        <h4>Save as templates</h4>
+        <p>Once a role set is good, save it as a permission template and reuse on the next project.</p>
+      </div>
+    </div>
+    <div class="callout">
+      <p><strong>Edge case:</strong> Test managers and Testers don't get Repo edit access — but they <em>do</em> need view access for white-box testing. The defaults handle this; don't strip Repo entirely.</p>
+    </div>
+  </section>
+
+  <!-- 22. KEY TAKEAWAYS -->
+  <section class="slide">
+    <div class="slide-header">
+      <div class="brand"><span class="dot"></span>CodeArts Best Practices</div>
+      <div class="section-tag">Wrap-up</div>
+    </div>
+    <h2>Key takeaways for our team</h2>
+    <p>What we should walk out of this room agreeing on.</p>
+    <div class="key-list">
+      <div class="item"><div class="check">★</div><div><h5>Adopt the HE2E loop end-to-end</h5><p>Plan → iterate → continuously deliver. Don't pick and choose stages.</p></div></div>
+      <div class="item"><div class="check">★</div><div><h5>Branch + MR is mandatory</h5><p>Master is sacred. Every change goes through a reviewed MR.</p></div></div>
+      <div class="item"><div class="check">★</div><div><h5>Static check inside the pipeline</h5><p>With pass conditions — bad code shouldn't reach prod.</p></div></div>
+      <div class="item"><div class="check">★</div><div><h5>Containerise everything</h5><p>One image, every environment. Eliminates "works on my machine".</p></div></div>
+      <div class="item"><div class="check">★</div><div><h5>Auto-trigger on commit</h5><p>Build &amp; pipeline kick off on push to master — no manual runs.</p></div></div>
+      <div class="item"><div class="check">★</div><div><h5>Security on by default</h5><p>CTS · whitelists · protected branches · private params from day one.</p></div></div>
+      <div class="item"><div class="check">★</div><div><h5>Role templates for every team</h5><p>Save once, reuse forever — saves weeks per new project.</p></div></div>
+      <div class="item"><div class="check">★</div><div><h5>Release pay-per-use cleanly</h5><p>Always tear down what you no longer need.</p></div></div>
+    </div>
+  </section>
+
+  <!-- 23. CLOSING -->
+  <section class="slide end-slide">
+    <div class="brand" style="position:absolute; top: 56px; left: 80px;"><span class="dot"></span>CodeArts Best Practices</div>
+    <h1>Questions?</h1>
+    <p style="margin-top:20px;">Let's discuss how we'll adapt this to our environment.</p>
+    <div style="margin-top: 40px;">
+      <span class="pill">HE2E DevOps</span>
+      <span class="pill">Phoenix Mall</span>
+      <span class="pill alt">Security</span>
+      <span class="pill alt">Permissions</span>
+      <span class="pill good">Continuous Delivery</span>
+    </div>
+    <div class="meta" style="margin-top: 56px; color: var(--ink-soft); font-size: 13px; letter-spacing: 1.5px;">RESHOAN · CODEARTS IMPLEMENTATION · 2026</div>
+  </section>
+
+</div>
+
+<div class="hint">← / → arrow keys · space · click anywhere</div>
+<div class="controls">
+  <button id="prev" title="Previous">‹</button>
+  <span class="counter" id="counter">1 / 23</span>
+  <button id="next" title="Next">›</button>
+</div>
+<div class="progress" id="progress" style="width: 4.3%;"></div>
+
+<script>
+  (function() {
+    const slides = document.querySelectorAll('.slide');
+    const total = slides.length;
+    let current = 0;
+    const counter = document.getElementById('counter');
+    const progress = document.getElementById('progress');
+
+    function show(idx) {
+      idx = Math.max(0, Math.min(total - 1, idx));
+      slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+      current = idx;
+      counter.textContent = (idx + 1) + ' / ' + total;
+      progress.style.width = ((idx + 1) / total * 100) + '%';
+    }
+    function next() { show(current + 1); }
+    function prev() { show(current - 1); }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); next(); }
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prev(); }
+      else if (e.key === 'Home') { show(0); }
+      else if (e.key === 'End') { show(total - 1); }
+    });
+    document.getElementById('next').addEventListener('click', next);
+    document.getElementById('prev').addEventListener('click', prev);
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('.controls') || e.target.closest('a') || e.target.closest('button')) return;
+      next();
+    });
+    counter.textContent = '1 / ' + total;
+  })();
+</script>
+</body>
+</html>
