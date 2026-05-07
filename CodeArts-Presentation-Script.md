@@ -1,6 +1,6 @@
 # CodeArts Best Practices — Speaker Script
 
-A walkthrough script for the 23-slide presentation. Use it as a guide — don't read it word-for-word. Each section is one slide. Total runtime at a normal speaking pace: about **25–30 minutes**, leaving room for Q&A.
+A walkthrough script for the 24-slide presentation. Use it as a guide — don't read it word-for-word. Each section is one slide. Total runtime at a normal speaking pace: about **25–30 minutes**, leaving room for Q&A.
 
 Tip: keep one finger on the right-arrow key. The deck advances on click anywhere too, so don't worry about hitting buttons.
 
@@ -10,17 +10,53 @@ Tip: keep one finger on the right-arrow key. The deck advances on click anywhere
 
 > "Thanks everyone for making the time. Today I want to walk us through what implementing CodeArts looks like in practice — not as a marketing tour of features, but as a concrete, end-to-end example of how a real team would use it.
 >
-> What you'll see is based on the official Huawei CodeArts best-practices guide. It uses a sample project called Phoenix Mall to show every step, every role, and every tool from sprint planning all the way to a clean prod release.
+> What you'll see is based on the official Huawei CodeArts best-practices guide, walked through using a sample project called Phoenix Mall. By the end you should have a clear mental model of how we plan work in CodeArts, how code moves from a developer's laptop to a running cluster, how we keep it secure, and how nine different teams collaborate inside it.
 >
-> By the end of this session you should have a clear mental model of: how we plan work in CodeArts, how code moves from a developer's laptop to a running cluster, how we keep it secure, and how we set up permissions so nine different teams can collaborate without stepping on each other.
->
-> Let's get into it."
+> But before any of that — let me spend a couple of minutes on **what CodeArts actually is**, because I know not everyone here has worked with it directly. Let's go to the next slide."
 
 (advance)
 
 ---
 
-## Slide 2 — Agenda
+## Slide 2 — What is CodeArts?
+
+> "**CodeArts is Huawei Cloud's integrated DevOps platform.** Think of it as a single SaaS suite that bundles every tool a software team needs to take an idea from a backlog item to a running production deployment.
+>
+> The pitch is straightforward: instead of stitching together five or six different vendors with integration plugins and brittle glue, you get one platform with native traceability from work item, to commit, to scan, to build, to deploy, to test case — all under one identity and one permission model.
+>
+> What's on screen is the ten services that make up the suite. Reading across:
+>
+> **Req** is requirements and agile project management — roughly a Jira equivalent.
+>
+> **Repo** is Git-based source code hosting — think GitHub or GitLab.
+>
+> **Check** does static code analysis with quality gates — think SonarQube.
+>
+> **Build** is CI build automation — think Jenkins or GitHub Actions.
+>
+> **Artifact** is the package and binary repository — think Artifactory or Nexus.
+>
+> **Deploy** handles deployment to both VMs and Kubernetes — think AWS CodeDeploy or Argo CD.
+>
+> **Pipeline** orchestrates the entire CI/CD flow — think Jenkins Pipelines or GitHub Actions workflows.
+>
+> **TestPlan** is manual and automated test management — think TestRail or Zephyr.
+>
+> **PerfTest** handles performance and load testing — comparable to JMeter or LoadRunner.
+>
+> And **Governance** is software composition analysis and license compliance — Snyk or Black Duck territory.
+>
+> All of these sit on top of Huawei Cloud's broader infrastructure — **SWR** for container images, **CCE** for managed Kubernetes, **ECS** for virtual machines — and we'll see each of those in action through the rest of the walk-through.
+>
+> The reason this integration matters in practice: if you've ever spent a sprint debugging why your Jira-to-Bitbucket integration stopped passing commit messages through, or why a Jenkins-SonarQube plugin broke after an upgrade, you know the cost of stitching. CodeArts is essentially a bet that integration is worth more than best-of-breed. By the end of today, you should have a clear sense of whether that's the right bet for our team.
+>
+> With that grounded — let me show you the agenda for the rest of the session."
+
+(advance)
+
+---
+
+## Slide 3 — Agenda
 
 > "There are four building blocks I want to land. First, the HE2E DevOps framework — that's the philosophy underneath everything. Second, the Phoenix Mall sample — that's where we trace a single feature from idea to production. Third, security configuration — operational, code, and continuous-delivery security. And fourth, permissions — how we structure roles for nine different teams.
 >
@@ -30,7 +66,7 @@ Tip: keep one finger on the right-arrow key. The deck advances on click anywhere
 
 ---
 
-## Slide 3 — The HE2E DevOps Framework
+## Slide 4 — The HE2E DevOps Framework
 
 > "HE2E stands for Huawei End-to-End. It's not a brand-new methodology — it's an operable, implementable agile framework that combines what's been learned from the industry with Huawei's own practices.
 >
@@ -50,7 +86,7 @@ Tip: keep one finger on the right-arrow key. The deck advances on click anywhere
 
 ---
 
-## Slide 4 — Meet Phoenix Mall
+## Slide 5 — Meet Phoenix Mall
 
 > "To make all of this concrete, the guide walks through a single sample project called Phoenix Mall.
 >
@@ -66,7 +102,7 @@ Tip: keep one finger on the right-arrow key. The deck advances on click anywhere
 
 ---
 
-## Slide 5 — Solution Architecture
+## Slide 6 — Solution Architecture
 
 > "Architecturally, Phoenix Mall is five microservices.
 >
@@ -88,7 +124,7 @@ Tip: keep one finger on the right-arrow key. The deck advances on click anywhere
 
 ---
 
-## Slide 6 — The Team
+## Slide 7 — The Team
 
 > "Four roles drive this. Keep these names in mind because they'll keep coming back.
 >
@@ -106,7 +142,7 @@ Tip: keep one finger on the right-arrow key. The deck advances on click anywhere
 
 ---
 
-## Slide 7 — Resource Planning
+## Slide 8 — Resource Planning
 
 > "Before any code is written, three resources need to be in place — and they all need to live in the same region.
 >
@@ -122,7 +158,7 @@ Tip: keep one finger on the right-arrow key. The deck advances on click anywhere
 
 ---
 
-## Slide 8 — The End-to-End Loop
+## Slide 9 — The End-to-End Loop
 
 > "Here's the full nine-step loop. This is the spine of the rest of the presentation — every slide from here forward zooms into one of these boxes.
 >
@@ -150,7 +186,7 @@ Tip: keep one finger on the right-arrow key. The deck advances on click anywhere
 
 ---
 
-## Slide 9 — Step 1–2: Prepare and Plan
+## Slide 10 — Step 1–2: Prepare and Plan
 
 > "Sarah's first job is straightforward. Log into CodeArts, click Create Project, pick the DevOps Full-Process template, name it Phoenix Mall.
 >
@@ -172,7 +208,7 @@ Tip: keep one finger on the right-arrow key. The deck advances on click anywhere
 
 ---
 
-## Slide 10 — Step 3: Develop Code
+## Slide 11 — Step 3: Develop Code
 
 > "Now Chris codes. The golden rule on this slide is the one we should all internalise: **never code on master.**
 >
@@ -196,7 +232,7 @@ Tip: keep one finger on the right-arrow key. The deck advances on click anywhere
 
 ---
 
-## Slide 11 — Step 4: Check Code
+## Slide 12 — Step 4: Check Code
 
 > "Static analysis happens through CodeArts Check. The motivation in the guide is honest: as Phoenix Mall got bigger, more issues piled up, fixes got expensive, and there were no unified coding standards. The fix was: standards plus continuous static scanning plus issue-fixing inside each sprint.
 >
@@ -214,7 +250,7 @@ Tip: keep one finger on the right-arrow key. The deck advances on click anywhere
 
 ---
 
-## Slide 12 — Step 5: Build and Push to SWR
+## Slide 13 — Step 5: Build and Push to SWR
 
 > "Now we package microservices into images. The reason matters: deployment failures often come from inconsistent environments. The classic example from the guide — JDK gets upgraded in dev, nobody updates the environment list, prod stays on the old version, things break. Containerising the app plus its environment together eliminates that whole class of problem.
 >
@@ -238,7 +274,7 @@ Tip: keep one finger on the right-arrow key. The deck advances on click anywhere
 
 ---
 
-## Slide 13 — Step 6a: Deploy to CCE
+## Slide 14 — Step 6a: Deploy to CCE
 
 > "There are two deployment paths. We'll cover CCE first, ECS next. Pick whichever matches your platform — most modern teams will go CCE.
 >
@@ -260,7 +296,7 @@ Tip: keep one finger on the right-arrow key. The deck advances on click anywhere
 
 ---
 
-## Slide 14 — Step 6b: Deploy to ECS
+## Slide 15 — Step 6b: Deploy to ECS
 
 > "If you're not running Kubernetes, the alternative is deploying directly to a single host using Docker Compose. The sample preset for this is **phoenix-sample-standalone**.
 >
@@ -282,7 +318,7 @@ Tip: keep one finger on the right-arrow key. The deck advances on click anywhere
 
 ---
 
-## Slide 15 — Step 7: Manage Tests
+## Slide 16 — Step 7: Manage Tests
 
 > "Now Billy takes over. CodeArts TestPlan is where the test cycle lives — plans, designs, executes, and tracks quality.
 >
@@ -304,7 +340,7 @@ Tip: keep one finger on the right-arrow key. The deck advances on click anywhere
 
 ---
 
-## Slide 16 — Step 8: Pipelines
+## Slide 17 — Step 8: Pipelines
 
 > "This is where everything comes together. A pipeline is what turns the previous steps from a sequence of manual actions into one automated, repeatable flow.
 >
@@ -326,7 +362,7 @@ Tip: keep one finger on the right-arrow key. The deck advances on click anywhere
 
 ---
 
-## Slide 17 — Step 9: Release Resources
+## Slide 18 — Step 9: Release Resources
 
 > "Quick but important. CCE and ECS are both billed pay-per-use. As long as they're running, the meter is running.
 >
@@ -340,7 +376,7 @@ Tip: keep one finger on the right-arrow key. The deck advances on click anywhere
 
 ---
 
-## Slide 18 — Configuring CodeArts Security
+## Slide 19 — Configuring CodeArts Security
 
 > "We've finished the operational walk-through. The next big block is security. The guide breaks it into three lanes — and we should adopt all three by default, not pick and choose.
 >
@@ -366,7 +402,7 @@ Tip: keep one finger on the right-arrow key. The deck advances on click anywhere
 
 ---
 
-## Slide 19 — Concrete Security Checklist
+## Slide 20 — Concrete Security Checklist
 
 > "Here's the do-this-on-day-one version. Eight items, in priority order.
 >
@@ -392,7 +428,7 @@ Tip: keep one finger on the right-arrow key. The deck advances on click anywhere
 
 ---
 
-## Slide 20 — Permissions for Nine Teams
+## Slide 21 — Permissions for Nine Teams
 
 > "The guide ships a worked example of permission configuration for an IPD project — Integrated Product Development — with **nine different teams**. The principle is: build on system roles, copy-and-adjust where you need a variant, save the result as a template you can reuse on the next project.
 >
@@ -424,7 +460,7 @@ Tip: keep one finger on the right-arrow key. The deck advances on click anywhere
 
 ---
 
-## Slide 21 — Permission Principles
+## Slide 22 — Permission Principles
 
 > "Three principles to guide our rollout.
 >
@@ -440,7 +476,7 @@ Tip: keep one finger on the right-arrow key. The deck advances on click anywhere
 
 ---
 
-## Slide 22 — Key Takeaways
+## Slide 23 — Key Takeaways
 
 > "If we agree on these eight things in this room, our CodeArts implementation succeeds.
 >
@@ -466,7 +502,7 @@ Tip: keep one finger on the right-arrow key. The deck advances on click anywhere
 
 ---
 
-## Slide 23 — Closing / Q&A
+## Slide 24 — Closing / Q&A
 
 > "That's the end of the walk-through. So — what's next? I'd like us to leave this meeting with three concrete actions.
 >
@@ -479,23 +515,3 @@ Tip: keep one finger on the right-arrow key. The deck advances on click anywhere
 > Once those three are settled, I'll come back to this group with a concrete implementation plan and timeline.
 >
 > Happy to take questions now."
-
----
-
-## Notes for the presenter
-
-A few things worth keeping in your back pocket in case they come up.
-
-If someone asks **"why this framework over Jenkins/GitLab/etc."** — emphasise that HE2E isn't a tool, it's a methodology, and CodeArts is one implementation of it. The principles transfer; the integration is the value. The pitch over a Jenkins-plus-Jira-plus-SonarQube-plus-Artifactory-plus-Spinnaker stack is fewer integration points to maintain, single sign-on, and cross-service traceability for free.
-
-If someone asks **"how does it stack up against the GitHub Enterprise stack?"** — GitHub Enterprise covers Repo (Git), Pipeline (Actions), Artifact (Packages), Check (CodeQL), and basic project tracking (Projects). CodeArts adds first-class TestPlan, a more mature deploy story for VMs as well as Kubernetes, and a heavier project-management module. GitHub's edge is developer ecosystem and the marketplace. CodeArts's edge is the built-in test management and the deeper deploy tooling.
-
-If someone asks **"how does it stack up against GitLab?"** — closest peer in philosophy. Both are 'single application' DevOps platforms. GitLab's edge is the community ecosystem and a more mature self-hosting story. CodeArts's edge is native integration with Huawei Cloud — CCE, ECS, SWR — for shops already in that environment.
-
-If someone asks **"how long would this rollout take us?"** — the honest answer is: the technical setup for one team is days, but the role/template work and the cultural shift to branch-and-MR plus pipeline-on-commit takes weeks to months depending on team size.
-
-If someone asks **about cost** — the practice guide is explicit that ECS and CCE are pay-per-use and bill from the moment of provisioning, so any pilot needs a clear teardown date. The CodeArts Basic edition for 5 users for one month is the lowest tier suggested.
-
-If someone asks **about the .NET Core vs Java choice** for Worker — that's a sample-project artifact, not a framework decision. The sample provides both to show CodeArts is technology-stack-agnostic; we'd pick whichever matches our stack.
-
-Good luck with the presentation.
